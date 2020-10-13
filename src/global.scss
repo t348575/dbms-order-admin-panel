@@ -24,3 +24,140 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+* {
+    box-sizing: border-box;
+}
+.center-vertical {
+    display: flex;
+    align-items: center;
+}
+.center-horizontal {
+    display: flex;
+    justify-content: center;
+}
+.center-middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.full-height {
+    height: 100%;
+}
+.possible-full-height {
+    max-height: 100%;
+    overflow: visible;
+}
+.full-width {
+    width: 100%;
+}
+@media screen and (max-width: 576px){
+    .disappear-phone {
+        display: none;
+    }
+}
+.auto-height .modal-wrapper {
+    min-height: 0!important;
+    max-height: 95vh!important;
+    height: auto!important;
+    overflow: auto!important;
+    .ion-page,
+    .ion-page .content,
+    .ion-page .content .scroll-content {
+        contain: content!important;
+        position: relative!important;
+        top: auto!important;
+        left: auto!important;
+        padding: 0.5em!important;
+    }
+}
+.view-order .modal-wrapper {
+    --min-height: 0;
+    --height: 85%;
+}
+.auto-height-var .modal-wrapper {
+    min-height: var(--auto-height-min)!important;
+    max-height: var(--auto-height-max)!important;
+    height: var(--auto-height-height)!important;
+    overflow: var(--auto-height-overflow)!important;
+    .ion-page {
+        contain: var(--auto-height-contain)!important;
+        position: var(--auto-height-position)!important;
+        top: var(--auto-height-top)!important;
+        left: var(--auto-height-left)!important;
+        padding: var(--auto-height-padding)!important;
+    }
+}
+.alert-wrapper {
+    --max-width: 95vw!important;
+    --width: 35vw!important;
+}
+.alert-message::-webkit-scrollbar, .alert-checkbox-group::-webkit-scrollbar {
+    width: 0.7em;
+    display: block !important;
+}
+.alert-message::-webkit-scrollbar-track, .alert-checkbox-group::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+.alert-message::-webkit-scrollbar-thumb, .alert-checkbox-group::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+.alert-checkbox-group {
+    overflow-y: auto!important;
+}
+.alert-radio-group::-webkit-scrollbar, .alert-checkbox-group::-webkit-scrollbar {
+    width: 0.7em;
+    display: block !important;
+}
+.alert-radio-group::-webkit-scrollbar-track, .alert-checkbox-group::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+.alert-radio-group::-webkit-scrollbar-thumb, .alert-checkbox-group::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+.login-popover .popover-content {
+    min-width: 15%;
+    max-width: 50%;
+}
+.cart-popover .popover-content {
+    min-width: 30%;
+    max-width: 75%;
+    max-height: 100%;
+}
+.title {
+    font-size: 1.5em;
+    font-weight: 500;
+    padding-right: 1em;
+    padding-left: 0.5em;
+    cursor: pointer;
+}
+.navbar-item {
+    cursor: pointer;
+}
+.backdrop-no-scroll ion-content :not(.auto-height) {
+    --overflow: hidden;
+}
+.backdrop-no-scroll ion-backdrop+* ion-content {
+    --overflow: visible;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.margin {
+    margin: 1em;
+}
+.small-icon {
+    font-size: 1em;
+}
+.middle-link {
+    margin-left: 0.4em; cursor: pointer
+}
+.margin-right {
+    margin-right: 2em;
+}

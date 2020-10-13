@@ -1,0 +1,27 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-title>
+            Cart Items&nbsp;
+            Total: ₹{{order.ord_summ.total}}
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="close()" class="ion-float-right">
+                <ion-icon color="danger" slot="icon-only" name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row *ngFor="let ord of order.ord_prod">
+            <ion-col size="6">
+                <img [src]="ord.product.prod_img" style="width: 100px;" onerror="this.src='assets/alt-img.jpg'" />
+            </ion-col>
+            <ion-col size="6">
+                <ion-text color="dark">{{ord.product.prod_name}}</ion-text>
+                <br/>
+                <ion-text color="dark">₹{{ord.product.prod_price * ord.count}}</ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

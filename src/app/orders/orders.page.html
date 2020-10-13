@@ -1,0 +1,121 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Orders</ion-title>
+        <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="reset()">
+                <ion-icon name="close" slot="icon-only" color="danger"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="setPage({ offset: 0 })">
+                <ion-icon name="refresh" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="3">
+                <ion-item>
+                    <ion-label position="floating">Search</ion-label>
+                    <ion-input type="text" debounce="500" [(ngModel)]="search" (ionChange)="setPage({ offset: 0 })"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="4">
+                <ion-item>
+                    <ion-label position="floating">Order state</ion-label>
+                    <ion-select [(ngModel)]="state" [value]="0" interface="popover" (ionChange)="setPage({ offset: 0 })">
+                        <ion-select-option [value]="-2">Any state</ion-select-option>
+                        <ion-select-option [value]="0">New orders</ion-select-option>
+                        <ion-select-option [value]="1">Packaging</ion-select-option>
+                        <ion-select-option [value]="2">Shipment sent</ion-select-option>
+                        <ion-select-option [value]="3">Shipment reached</ion-select-option>
+                        <ion-select-option [value]="4">Delivered</ion-select-option>
+                        <ion-select-option [value]="-1">Cancelled</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2">
+                <ion-item>
+                    <ion-label position="floating">Start date</ion-label>
+                    <ion-datetime display-format="DD-MM-YYYY" (ionChange)="setPage({ offset: 0 })" [(ngModel)]="startDate"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2">
+                <ion-item>
+                    <ion-label position="floating">End date</ion-label>
+                    <ion-datetime display-format="DD-MM-YYYY" (ionChange)="setPage({ offset: 0 })" [(ngModel)]="endDate"></ion-datetime>
+                </ion-item>
+            </ion-col>
+            <ion-col size="1">
+                <ion-item>
+                    <ion-label position="floating"> </ion-label>
+                    <ion-select [(ngModel)]="numPerPage" [value]="25" interface="popover" (ionChange)="setPage({ offset: 0 })">
+                        <ion-select-option [value]="25">25</ion-select-option>
+                        <ion-select-option [value]="50">50</ion-select-option>
+                        <ion-select-option [value]="100">100</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ngx-datatable
+            class="material expandable margin"
+            [rowHeight]="50"
+            [rows]="orders"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [columnMode]="columnMode"
+            [trackByProp]="'updated'"
+            [count]="total"
+            [externalPaging]="true"
+            [offset]="pageNumber"
+            [limit]="numPerPage"
+            [externalSorting]="true"
+            [loadingIndicator]="loading"
+            (page)="setPage($event)"
+            [scrollbarH]="true"
+            [reorderable]="true"
+            #table>
+        <ngx-datatable-row-detail rowHeight="auto">
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                <p style="user-select: text;-webkit-user-select: text; margin: 0.5em; width: 100%">
+                    Order ID: {{row.ord_id}}
+                    <br/>
+                    Customer ID: {{row.cust_id}}
+                    <br/>
+                    <ion-button fill="outline" (click)="viewOrder(row)">View Items</ion-button>
+                    <ion-button fill="outline" [disabled]="!canChangeState" color="danger" (click)="changeOrderState(row)">Change State</ion-button>
+                    <ion-button fill="outline" [disabled]="!canViewPayment" color="warning" (click)="viewPayment(row)">View Payment</ion-button>
+                </p>
+            </ng-template>
+        </ngx-datatable-row-detail>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="ord_id" name="Order ID">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.ord_id}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="cust_id" name="Customer ID">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.cust_id}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="ord_date" name="Order Date">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{getDate(row.ord_date)}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="state" name="State">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded" class="row-center">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{getState(row.state)}}</a>
+                <a class="middle-link" *ngIf="canChangeState" (click)="changeOrderState(row)">
+                    <ion-icon name="pencil-outline" color="dark" slot="end"></ion-icon>
+                </a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="total" name="Total">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.ord_summ.total}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</ion-content>

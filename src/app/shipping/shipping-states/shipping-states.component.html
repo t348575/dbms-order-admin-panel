@@ -1,0 +1,78 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title *ngIf="!add">
+            View / Add states
+        </ion-title>
+        <ion-title *ngIf="add">
+            <ion-button fill="clear" (click)="add = !add">
+                <ion-icon name="arrow-back-outline" slot="icon-only" color="dark"></ion-icon>
+            </ion-button>
+            View / Add states
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="close()" class="ion-float-right">
+                <ion-icon color="danger" slot="icon-only" name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="!add">
+    <ion-list>
+        <ion-grid *ngFor="let state of states; let i = index">
+            <ion-row>
+                <ion-col size="10">
+                    {{state.value}} at {{getDate(state.time)}}
+                </ion-col>
+                <ion-col size="2" class="center-middle">
+                    <ion-button fill="outline" color="danger" (click)="removeStatus(i)">
+                        <ion-icon name="close" slot="icon-only" color="danger"></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-list>
+    <ion-button fill="outline" class="ion-float-right margin" (click)="add = !add">
+        Add status
+        <ion-icon name="add" slot="end"></ion-icon>
+    </ion-button>
+</ion-content>
+<ion-content *ngIf="add">
+    <ion-grid>
+        <ion-row>
+            <ion-col size="10" offset="1">
+                <ion-item>
+                    <ion-label position="floating">Status text</ion-label>
+                    <ion-input type="text" [(ngModel)]="statusText"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Update order</ion-label>
+                    <ion-toggle [(ngModel)]="updateOrder" (ionChange)="setStatus()"></ion-toggle>
+                </ion-item>
+                <ion-item [disabled]="!updateOrder">
+                    <ion-label position="floating">Select preset order status</ion-label>
+                    <ion-select [(ngModel)]="orderStatus" (ionChange)="setStatus()" interface="popover">
+                        <ion-select-option [value]="3" [disabled]="shipment.state >= 3 || shipment.state === -1">Shipment reached</ion-select-option>
+                        <ion-select-option [value]="4" [disabled]="shipment.state >= 4 || shipment.state === -1">Shipment delivered</ion-select-option>
+                        <ion-select-option [value]="-1" [disabled]="shipment.state === -1">Shipment cancelled</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Status time</ion-label>
+                    <ion-datetime [(ngModel)]="statusDate" display-format="YYYY-MM-DD HH:mm:ss"></ion-datetime>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12" class="center-middle">
+                <ion-buttons>
+                    <ion-button class="ion-float-left" fill="outline" (click)="setNow()">
+                        Set datetime to now
+                    </ion-button>
+                    <ion-button class="ion-float-right" fill="outline" (click)="addStatus()">
+                        Add status
+                    </ion-button>
+                </ion-buttons>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

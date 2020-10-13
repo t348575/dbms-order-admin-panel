@@ -1,0 +1,124 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Edit / View details
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="close()" class="ion-float-right">
+                <ion-icon color="danger" slot="icon-only" name="close-circle-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-item>
+        <ion-label>ID: {{product.prod_id}}</ion-label>
+    </ion-item>
+    <br/>
+    <ion-title>Name</ion-title>
+    <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-textarea type="text" [disabled]="edit" [(ngModel)]="product.prod_name" auto-grow="true"></ion-textarea>
+    </ion-item>
+    <br/>
+    <ion-title>Description</ion-title>
+    <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea type="text" [disabled]="edit" [(ngModel)]="product.prod_desc" auto-grow="true"></ion-textarea>
+    </ion-item>
+    <br/>
+    <ion-title>Stock</ion-title>
+    <ion-item>
+        <ion-label position="floating">Stock</ion-label>
+        <ion-input type="number" [disabled]="edit" [(ngModel)]="product.prod_stock"></ion-input>
+    </ion-item>
+    <br/>
+    <ion-title>Price</ion-title>
+    <ion-item>
+        <ion-label position="floating">Price</ion-label>
+        <ion-input type="number" [disabled]="edit" [(ngModel)]="product.prod_price"></ion-input>
+    </ion-item>
+    <br/>
+    <ion-title>Type</ion-title>
+    <ion-item>
+        <ion-label>{{type}}</ion-label>
+        <ion-toggle [(ngModel)]="product.prod_type" [disabled]="edit" (ionChange)="swapType()"></ion-toggle>
+    </ion-item>
+    <br/>
+    <ion-title>Dimensions</ion-title>
+    <div *ngIf="product.prod_type">
+        <ion-item>
+            <ion-label position="floating">Weight</ion-label>
+            <ion-input type="number" [disabled]="edit" [(ngModel)]="product.prod_dim"></ion-input>
+        </ion-item>
+    </div>
+    <div *ngIf="!product.prod_type">
+        <ion-item>
+            <ion-label position="floating">Length</ion-label>
+            <ion-input type="number" [disabled]="edit" [(ngModel)]="product.prod_dim.y"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Width</ion-label>
+            <ion-input type="number" [disabled]="edit" [(ngModel)]="product.prod_dim.x"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Height</ion-label>
+            <ion-input type="number" [disabled]="edit" [(ngModel)]="product.prod_dim.z"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Weight</ion-label>
+            <ion-input type="number" [disabled]="edit" [(ngModel)]="product.prod_dim.w"></ion-input>
+        </ion-item>
+    </div>
+    <br/>
+    <ion-title>Image</ion-title>
+    <ion-item>
+        <ion-grid>
+            <ion-row>
+                <ion-col size="12">
+                    <div class="full-width full-height center-middle">
+                        <img [src]="product.prod_img" style="width: 100px;" onerror="this.src='assets/alt-img.jpg'" />
+                    </div>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-button fill="outline" [disabled]="edit">
+                        <ion-icon lazy="true" slot="start" name="image"></ion-icon>
+                        <input type="file" id="file-input" multiple="false" accept="image/png, image/jpeg" [disabled]="edit" #image>
+                    </ion-button>
+                    <ion-button (click)="upload()" [disabled]="edit">Change image</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-item>
+    <br/>
+    <ion-title>Features</ion-title>
+    <ion-list>
+        <ion-grid *ngFor="let feat of features; let i = index;">
+            <ion-row>
+                <ion-col size="5">
+                    <ion-item>
+                        <ion-label position="floating">Name</ion-label>
+                        <ion-input type="text" [disabled]="edit" [(ngModel)]="feat.name"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col size="5">
+                    <ion-item>
+                        <ion-label position="floating">Value</ion-label>
+                        <ion-input type="text" [disabled]="edit" [(ngModel)]="feat.value"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col size="2">
+                    <ion-button fill="clear" (click)="removeFeature(i)">
+                        <ion-icon name="close-circle" slot="icon-only" color="danger"></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-button class="ion-float-right margin-right" [disabled]="edit" fill="clear" (click)="addFeature()">
+            <ion-icon name="add-circle" slot="icon-only" color="success"></ion-icon>
+        </ion-button>
+    </ion-list>
+    <ion-button class="ion-float-right margin" [disabled]="edit" (click)="update()">Update details</ion-button>
+</ion-content>

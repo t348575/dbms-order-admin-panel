@@ -1,0 +1,138 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Products</ion-title>
+        <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="reset()">
+                <ion-icon name="close" slot="icon-only" color="danger"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" (click)="setPage({ offset: 0 })">
+                <ion-icon name="refresh" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-grid>
+        <ion-row *ngFor="let query of queries; let i = index;">
+            <ion-col size="3">
+                <ion-item>
+                    <ion-label position="floating">Column</ion-label>
+                    <ion-select interface="popover" [(ngModel)]="query.column" (ionChange)="columnChange(i)">
+                        <ion-select-option *ngFor="let cl of columns" [value]="cl.value">{{cl.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="3">
+                <ion-item>
+                    <ion-label position="floating">Operator</ion-label>
+                    <ion-select interface="popover" [(ngModel)]="query.operator">
+                        <ion-select-option *ngFor="let op of query.operators" [value]="op.value">{{op.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2">
+                <ion-item>
+                    <ion-label position="floating">Type</ion-label>
+                    <ion-select interface="popover" [(ngModel)]="query.operateOn">
+                        <ion-select-option *ngFor="let ops of query.operatesOn" [value]="ops">{{ops}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+            <ion-col size="3">
+                <ion-item *ngIf="query.operateOn === 'column'">
+                    <ion-label position="floating">Column</ion-label>
+                    <ion-select interface="popover" [(ngModel)]="query.operateValue">
+                        <ion-select-option *ngFor="let cl of columns" [value]="cl.value">{{cl.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item *ngIf="query.operateOn === 'value'">
+                    <ion-label position="floating">Value</ion-label>
+                    <ion-input type="text" [(ngModel)]="query.operateValue"></ion-input>
+                </ion-item>
+            </ion-col>
+            <ion-col size="1">
+                <div class="full-width full-height center-middle">
+                    <ion-button fill="clear" (click)="removeQuery(i)" [disabled]="i === 0">
+                        <ion-icon name="close" slot="icon-only" color="danger"></ion-icon>
+                    </ion-button>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="5">
+                <ion-item>
+                    <ion-label position="floating">Relation between queries</ion-label>
+                    <ion-textarea></ion-textarea>
+                </ion-item>
+            </ion-col>
+            <ion-col size="7">
+                <div class="full-height full-width center-middle">
+                    <ion-buttons>
+                        <ion-button fill="outline" (click)="addQuery()">
+                            Add query
+                        </ion-button>
+                        <ion-button fill="outline">
+                            Search
+                        </ion-button>
+                    </ion-buttons>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ngx-datatable
+            class="material expandable margin"
+            [rowHeight]="50"
+            [rows]="products"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [columnMode]="columnMode"
+            [trackByProp]="'updated'"
+            [count]="total"
+            [externalPaging]="true"
+            [offset]="pageNumber"
+            [limit]="numPerPage"
+            [externalSorting]="true"
+            [loadingIndicator]="loading"
+            (page)="setPage($event)"
+            (sort)="sort($event)"
+            [scrollbarH]="true"
+            [reorderable]="true"
+            #table>
+        <ngx-datatable-row-detail rowHeight="auto">
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                <p style="user-select: text;-webkit-user-select: text; margin: 0.5em; width: 100%;">
+                    Product ID: {{row.prod_id}}
+                    <br/>
+                    Product Name: {{row.prod_name}}
+                    <br/>
+                    <ion-button fill="outline" (click)="detailed(row)">Edit / View detailed</ion-button>
+                </p>
+            </ng-template>
+        </ngx-datatable-row-detail>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="prod_id" name="ID">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.prod_id}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="prod_name" name="Name">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.prod_name}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="prod_type" name="Type">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.prod_type === 0 ? 'Single' : 'Weight' }}</a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="prod_price" name="Price">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.prod_price}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="true" [sortable]="true" prop="prod_stock" name="Stock">
+            <ng-template let-row="row" ngx-datatable-cell-template let-expanded="expanded">
+                <a class="table-link" (click)="toggleExpandRow(row)">{{row.prod_stock}}</a>
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</ion-content>
