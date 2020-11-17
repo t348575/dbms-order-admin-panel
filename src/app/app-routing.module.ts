@@ -28,14 +28,13 @@ const routes: Routes = [
         loadChildren: () => import('./shipping/shipping.module').then( m => m.ShippingPageModule)
     },
     {
-        path: 'employees',
-        canActivate: [AuthGuardService],
-        loadChildren: () => import('./employees/employees.module').then( m => m.EmployeesPageModule)
-    },
-    {
         path: 'products',
         canActivate: [AuthGuardService],
         loadChildren: () => import('./products/products.module').then( m => m.ProductsPageModule)
+    },
+    {
+        path: 'employee',
+        loadChildren: () => import('./employee/employee.module').then( m => m.EmployeePageModule)
     }
 ];
 

@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
             visible: true
         },
         {
-            title: 'orders',
+            title: 'Orders',
             url: '/orders',
             icon: 'list',
             visible: true
@@ -43,12 +43,11 @@ export class AppComponent implements OnInit {
         },
         {
             title: 'Employees',
-            url: '/employees',
+            url: '/employee',
             icon: 'people-circle',
             visible: true
         }
     ];
-    public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
     public role = '';
     viewAccess = false;
     constructor(

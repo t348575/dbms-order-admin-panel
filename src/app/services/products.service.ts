@@ -18,9 +18,24 @@ export class ProductsService {
             });
         });
     }
-    getProducts(page: number, pageSize: number, dir: 'asc' | 'desc', sortBy: string, search: string) {
-        const query = qs.stringify({ page, pageSize, dir, sortBy, search });
+    getProducts(page: number, pageSize: number, dir: 'asc' | 'desc', sortBy: string, search: string, searchColumns: string[]) {
+        const query = qs.stringify({ page, pageSize, dir, sortBy, search, searchColumns });
         return this.http.get(`${Constants.server}/products/get?${query}`);
+    }
+    filterProducts(
+        page: number,
+        pageSize: number,
+        dir: 'asc' | 'desc',
+        sortBy: string,
+        search: string,
+        searchColumns: string[],
+        queries: any,
+        relations: string
+    ) {
+        const query = qs.stringify({
+            page, pageSize, dir, sortBy, search, searchColumns, queries: JSON.stringify(queries), relations
+        });
+        return this.http.get(`${Constants.server}/products/filter?${query}`);
     }
     getExtension(name: string) {
         const i = name.lastIndexOf('.');

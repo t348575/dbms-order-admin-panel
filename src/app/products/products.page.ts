@@ -24,34 +24,10 @@ export class ProductsPage implements OnInit {
     dir: 'asc' | 'desc' = 'asc';
     edit = false;
     sortBy = 'prod_name';
+    relations = '';
     @ViewChild('table') table;
-    queries = [
-        {
-            column: 'prod_name',
-            operators: [
-                {
-                    name: 'Equals',
-                    value: '='
-                },
-                {
-                    name: 'Not Equal',
-                    value: '!='
-                },
-                {
-                    name: 'Contains',
-                    value: '%'
-                },
-                {
-                    name: 'Does not contain',
-                    value: '!%'
-                }
-            ],
-            operator: '%',
-            operatesOn: ['value', 'column'],
-            operateOn: 'value',
-            operateValue: ''
-        }
-    ];
+    searchColumns = ['prod_name', 'prod_desc'];
+    queries = [];
     columns = [
         {
             name: 'ID',
@@ -139,14 +115,35 @@ export class ProductsPage implements OnInit {
     setPage(pageInfo) {
         this.pageNumber = pageInfo.offset;
         this.loading = true;
-        this.productsService.getProducts(this.pageNumber, this.numPerPage, this.dir, this.sortBy, this.search).subscribe(
-            (data: { data: ProductModel[], total: number }) => {
-                this.products = data.data;
-                this.products = [...this.products];
-                this.total = data.total;
-                this.loading = false;
-                this.cdr.detectChanges();
-            });
+        if (this.queries.length > 0) {
+            this.productsService.filterProducts(
+                this.pageNumber,
+                this.numPerPage,
+                this.dir,
+                this.sortBy,
+                this.search,
+                this.searchColumns,
+                this.queries,
+                this.relations
+            ).subscribe(
+                (data: { data: ProductModel[], total: number }) => {
+                    this.products = data.data;
+                    this.products = [...this.products];
+                    this.total = data.total;
+                    this.loading = false;
+                    this.cdr.detectChanges();
+                });
+        } else {
+            // tslint:disable-next-line:max-line-length
+            this.productsService.getProducts(this.pageNumber, this.numPerPage, this.dir, this.sortBy, this.search, this.searchColumns).subscribe(
+                (data: { data: ProductModel[], total: number }) => {
+                    this.products = data.data;
+                    this.products = [...this.products];
+                    this.total = data.total;
+                    this.loading = false;
+                    this.cdr.detectChanges();
+                });
+        }
     }
     reset() {
         this.pageNumber = 0;
@@ -156,6 +153,9 @@ export class ProductsPage implements OnInit {
         this.search = '';
         this.dir = 'asc';
         this.sortBy = 'prod_name';
+        this.queries = [];
+        this.searchColumns = ['prod_name', 'prod_desc'];
+        this.relations = '';
         this.setPage({ offset: 0 });
     }
     sort(event) {
@@ -226,7 +226,7 @@ export class ProductsPage implements OnInit {
                     },
                     {
                         name: 'Less than',
-                        value: '<='
+                        value: '<'
                     },
                     {
                         name: 'Greater than or equal',

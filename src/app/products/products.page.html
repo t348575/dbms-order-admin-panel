@@ -11,10 +11,30 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content (keydown.enter)="setPage({offset:0})">
     <ion-grid>
+        <ion-row>
+            <ion-col size="5">
+                <ion-searchbar placeholder="Search" [(ngModel)]="search"></ion-searchbar>
+            </ion-col>
+            <ion-col size="4">
+                <ion-select placeholder="Search columns" [(ngModel)]="searchColumns" multiple="true">
+                    <ion-select-option value="prod_id">ID</ion-select-option>
+                    <ion-select-option value="prod_name">Name</ion-select-option>
+                    <ion-select-option value="prod_desc">Description</ion-select-option>
+                    <ion-select-option value="prod_price">Price</ion-select-option>
+                    <ion-select-option value="prod_stock">Stock</ion-select-option>
+                    <ion-select-option value="prod_rating">Rating</ion-select-option>
+                </ion-select>
+            </ion-col>
+        </ion-row>
         <ion-row *ngFor="let query of queries; let i = index;">
-            <ion-col size="3">
+            <ion-col size="1">
+                <ion-item>
+                    <ion-label>{{i + 1}}</ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2">
                 <ion-item>
                     <ion-label position="floating">Column</ion-label>
                     <ion-select interface="popover" [(ngModel)]="query.column" (ionChange)="columnChange(i)">
@@ -52,7 +72,7 @@
             </ion-col>
             <ion-col size="1">
                 <div class="full-width full-height center-middle">
-                    <ion-button fill="clear" (click)="removeQuery(i)" [disabled]="i === 0">
+                    <ion-button fill="clear" (click)="removeQuery(i)">
                         <ion-icon name="close" slot="icon-only" color="danger"></ion-icon>
                     </ion-button>
                 </div>
@@ -62,7 +82,7 @@
             <ion-col size="5">
                 <ion-item>
                     <ion-label position="floating">Relation between queries</ion-label>
-                    <ion-textarea></ion-textarea>
+                    <ion-textarea [(ngModel)]="relations"></ion-textarea>
                 </ion-item>
             </ion-col>
             <ion-col size="7">
@@ -71,7 +91,7 @@
                         <ion-button fill="outline" (click)="addQuery()">
                             Add query
                         </ion-button>
-                        <ion-button fill="outline">
+                        <ion-button fill="outline" (click)="setPage({offset:0})">
                             Search
                         </ion-button>
                     </ion-buttons>

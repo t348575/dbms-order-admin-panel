@@ -8,7 +8,7 @@ import {AuthService} from '../services/auth.service';
 import {ModalController} from '@ionic/angular';
 import {ViewOrderComponent} from './view-order/view-order.component';
 import {ChangeOrderStateComponent} from './change-order-state/change-order-state.component';
-import {ViewPaymentComponent} from './view-payment/view-payment.component';
+import {ViewPaymentComponent} from '../view-payment/view-payment.component';
 @Component({
     selector: 'app-orders',
     templateUrl: './orders.page.html',
@@ -110,7 +110,7 @@ export class OrdersPage implements OnInit {
             component: ViewPaymentComponent,
             cssClass: 'auto-height',
             componentProps: {
-                order: row as OrderModel
+                payment: row.ord_payment
             }
         });
         await modal.present();

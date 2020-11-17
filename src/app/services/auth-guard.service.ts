@@ -15,31 +15,31 @@ export class AuthGuardService implements CanActivate{
         },
         {
             title: Roles.WarehouseClerk,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'products', 'views']
         },
         {
             title: Roles.WareHouseManager,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'employee', 'products', 'views']
         },
         {
             title: Roles.GeneralManager,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'employee', 'products', 'views']
         },
         {
             title: Roles.ShippingManager,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'employee', 'products', 'views']
         },
         {
             title: Roles.Admin,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'employee', 'products', 'views']
         },
         {
             title: Roles.GeneralClerk,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'products', 'views']
         },
         {
             title: Roles.DeliveryPrimary,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'products', 'views']
         },
         {
             title: Roles.DeliveryAssistant,
@@ -47,7 +47,7 @@ export class AuthGuardService implements CanActivate{
         },
         {
             title: Roles.CustomerService,
-            allowedLocations: ['home', 'orders', 'shipping', 'employees', 'products', 'views']
+            allowedLocations: ['home', 'orders', 'shipping', 'employee', 'products', 'views']
         }
     ];
     constructor(private auth: AuthService, private router: Router) { }

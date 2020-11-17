@@ -1,9 +1,25 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>Home</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-grid class="full-width full-height">
+        <ion-row>
+            <ion-col size="6" offset="3">
+                <h1>Server uptime {{data.uptime}}</h1>
+                <br/>
+                <h1>Customers: {{data.customers}}</h1>
+                <br/>
+                <h1>Employees: {{data.employees}}</h1>
+                <br/>
+                <h1>Active orders: {{data.orders}}</h1>
+                <br/>
+                <h1>Products: {{data.products}}</h1>
+                <br/>
+                <h1>Sales in last 24 hours: ₹ {{data.revenue}}</h1>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

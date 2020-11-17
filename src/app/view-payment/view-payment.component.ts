@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
-import {OrderModel} from '../../models/order-model';
+import {OrderModel} from '../models/order-model';
 
 @Component({
     selector: 'app-view-payment',
@@ -9,7 +9,7 @@ import {OrderModel} from '../../models/order-model';
 })
 export class ViewPaymentComponent implements OnInit {
     // tslint:disable-next-line:no-input-rename
-    @Input('order') order: OrderModel;
+    @Input('order') payment: any;
     constructor(private modalController: ModalController) { }
     ngOnInit() {}
     close() {

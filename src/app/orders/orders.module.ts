@@ -10,7 +10,7 @@ import { OrdersPage } from './orders.page';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ViewOrderComponent} from './view-order/view-order.component';
 import {ChangeOrderStateComponent} from './change-order-state/change-order-state.component';
-import {ViewPaymentComponent} from './view-payment/view-payment.component';
+import {ViewPaymentComponent} from '../view-payment/view-payment.component';
 
 @NgModule({
     imports: [
